@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+from sklearn.preprocessing import OrdinalEncoder
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
@@ -48,7 +49,7 @@ def _preprocess_data(data):
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
     # Load the dictionary as a Pandas DataFrame.
-    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
+    df = pd.DataFrame.from_dict([feature_vector_dict])
 
     # ---------------------------------------------------------------
     # NOTE: You will need to swap the lines below for your own data
@@ -59,11 +60,41 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
+
+    # feature_vector_df = feature_vector_df[(feature_vector_df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
+    # predict_vector = feature_vector_df[['Total_Qty_Sold','Stock_On_Hand']]
     
 
-    feature_vector_df = feature_vector_df[(feature_vector_df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
-    predict_vector = feature_vector_df[['Total_Qty_Sold','Stock_On_Hand']]
-                                
+    # TEAM ZM5 CODE STARTS BELOW
+ 
+
+    def onehot_encode(df, column):
+        df = df.copy()
+        dummies = pd.get_dummies(df[column], prefix=column, drop_first=True)
+        df = pd.concat([df, dummies], axis=1)
+        df = df.drop(column, axis=1)
+        return df 
+    
+    df = df[(df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
+    del df['Commodities']
+        
+    # ONE-HOT ENCODING
+    for column in ['Province', 'Container']:
+        df = onehot_encode(df, column)
+
+    predictor_list = ['Total_Kg_Sold',
+                        'Container_IA400',
+                        'Container_M4183',
+                        'Container_JE090',
+                        'Container_JG110',
+                        'Weight_Kg',
+                        'Total_Qty_Sold',
+                        'High_Price',
+                        'Sales_Total',
+                        'Stock_On_Hand']
+
+    predict_vector = df[predictor_list]
+                             
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -84,6 +115,7 @@ def load_model(path_to_model:str):
         The pretrained model loaded into memory.
 
     """
+    
     return pickle.load(open(path_to_model, 'rb'))
 
 def make_prediction(data, model):
