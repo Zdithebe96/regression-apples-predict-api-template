@@ -74,26 +74,25 @@ def _preprocess_data(data):
         df = pd.concat([df, dummies], axis=1)
         df = df.drop(column, axis=1)
         return df 
-    
+            
     df = df[(df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
     del df['Commodities']
-        
+    del df['Province']
+            
     # ONE-HOT ENCODING
-    for column in ['Province', 'Container']:
+    for column in ['Container']:
         df = onehot_encode(df, column)
 
-    predictor_list = ['Total_Kg_Sold',
-                        'Container_IA400',
-                        'Container_M4183',
-                        'Container_JE090',
-                        'Container_JG110',
-                        'Weight_Kg',
-                        'Total_Qty_Sold',
-                        'High_Price',
-                        'Sales_Total',
-                        'Stock_On_Hand']
+    
+    important = []
+    for i in [ 'Total_Kg_Sold', 'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110', 
+            'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand']:
+        A = [col for col in df.columns if i in col]
+        important.append(A)
 
-    predict_vector = df[predictor_list]
+    important_list = [item for sublist in important for item in sublist]
+
+    predict_vector = df[important_list]
                              
     # ------------------------------------------------------------------------
 
