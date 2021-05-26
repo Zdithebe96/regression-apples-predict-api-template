@@ -89,8 +89,9 @@ def _preprocess_data(data):
             continue
         else: 
             df[i] = 0
+    predictors = df[important_list]
 
-    predict_vector = df[important_list]
+    predict_vector = predictors.values
                              
     # ------------------------------------------------------------------------
 
