@@ -66,7 +66,7 @@ def _preprocess_data(data):
     
 
     # TEAM ZM5 CODE STARTS BELOW
- 
+
 
     def onehot_encode(df, column):
         df = df.copy()
@@ -83,14 +83,14 @@ def _preprocess_data(data):
     for column in ['Container']:
         df = onehot_encode(df, column)
 
-    
-    important = []
-    for i in [ 'Total_Kg_Sold', 'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110', 
-            'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand']:
-        A = [col for col in df.columns if i in col]
-        important.append(A)
+    important_list = [ 'Total_Kg_Sold', 'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand',
+                        'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110']
 
-    important_list = [item for sublist in important for item in sublist]
+    for i in  ['Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110']:
+        if i in df.columns:
+            continue
+        else: 
+            df[i] = 0
 
     predict_vector = df[important_list]
                              
