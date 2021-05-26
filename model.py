@@ -80,8 +80,7 @@ def _preprocess_data(data):
     del df['Province']
             
     # ONE-HOT ENCODING
-    for column in ['Container']:
-        df = onehot_encode(df, column)
+    df = onehot_encode(df, 'Container')
 
     important_list = [ 'Total_Kg_Sold', 'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand',
                         'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110']
