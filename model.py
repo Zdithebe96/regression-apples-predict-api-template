@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
-from sklearn.preprocessing import OrdinalEncoder
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
