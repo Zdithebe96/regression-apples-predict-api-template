@@ -62,14 +62,12 @@ def _preprocess_data(data):
 
     # feature_vector_df = feature_vector_df[(feature_vector_df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
     # predict_vector = feature_vector_df[['Total_Qty_Sold','Stock_On_Hand']]
-    
 
     # TEAM ZM5 CODE STARTS BELOW
 
-
     def onehot_encode(df, column):
         df = df.copy()
-        dummies = pd.get_dummies(df[column], prefix=column, drop_first=True)
+        dummies = pd.get_dummies(df[column], prefix=column, drop_first=False)
         df = pd.concat([df, dummies], axis=1)
         df = df.drop(column, axis=1)
         return df 
@@ -77,21 +75,21 @@ def _preprocess_data(data):
     df = df[(df['Commodities'] == 'APPLE GOLDEN DELICIOUS')]
     del df['Commodities']
     del df['Province']
-            
+                
     # ONE-HOT ENCODING
     df = onehot_encode(df, 'Container')
-
-    important_list = [ 'Total_Kg_Sold', 'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand',
-                        'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110']
+    df
+    important_list = [ 'Total_Kg_Sold', 'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110', 
+            'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand']
 
     for i in  ['Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110']:
         if i in df.columns:
             continue
         else: 
             df[i] = 0
+            
     predictors = df[important_list]
-
-    predict_vector = predictors.values
+    predict_vector = np.array(predictors)
                              
     # ------------------------------------------------------------------------
 
