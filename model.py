@@ -78,7 +78,7 @@ def _preprocess_data(data):
                 
     # ONE-HOT ENCODING
     df = onehot_encode(df, 'Container')
-    df
+    
     important_list = [ 'Total_Kg_Sold', 'Container_IA400', 'Container_M4183', "Container_JE090", 'Container_JG110', 
             'Weight_Kg', 'Total_Qty_Sold', 'High_Price', 'Sales_Total', 'Stock_On_Hand']
 
